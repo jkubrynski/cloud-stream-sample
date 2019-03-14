@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: users
+  cloud:
+    stream:
+      bindings:
+        users_out:
+          destination: ha_users
+          producer:
+            requiredGroups: default
+        permissions_in:
+          destination: ha_permissions
+        permissions_out:
+          destination: ha_permissions
+      defaults:
+        content-type: application/json
+      rabbit:
+        bindings:
+          users_out:
+            producer:
+              exchangeDurable: false
+              exchangeType: topic
+          permissions_in:
+            consumer:
+              exchangeDurable: false
+              exchangeType: fanout
+          permissions_out:
+            producer:
+              exchangeDurable: false
+              exchangeType: fanout
